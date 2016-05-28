@@ -8,6 +8,7 @@ The powershell script can do mutliple things, which are
 
 - Export - export an existing job into a JSON file
 - Import - import and recreate a job from a JSON definition file
+- Delete - delete the existing job (removes it entierly from Azure - the job, not the datasources)
 - Start  - start a Streaming Analytics job
 - Stop   - stop a Streaming Analytics job
 - Status - check the status of an existing job
@@ -31,3 +32,10 @@ Importing reads the JSON definition file applies the values in the JSON datasour
 
 <img src="http://www.redbaronofazure.com/wp-content/uploads/2016/05/StreamA-8A-run-script.png"/>
 
+## Service Bus
+
+The script needs the DLL Microsoft.ServiceBus.dll for configuring keys for the Service Bus. You can get this DLL in multiple ways via NuGet and Visual Studio. I've also included it here in my github repo just for your convenience.
+
+## Testing this script
+
+To use this script you first need to design a Streaming Analytics Job and then export it. After you have exported it you can delete it and then recreate it.
