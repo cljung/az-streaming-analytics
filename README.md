@@ -39,3 +39,5 @@ The script needs the DLL Microsoft.ServiceBus.dll for configuring keys for the S
 ## Testing this script
 
 To use this script you first need to design a Streaming Analytics Job and then export it. After you have exported it you can delete it and then recreate it.
+
+See my blog post for more details about how the script works
