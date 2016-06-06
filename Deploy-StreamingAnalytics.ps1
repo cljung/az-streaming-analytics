@@ -204,28 +204,30 @@ function CreateStreamingAnalyticsJob()
 function ExportDataSource( $DataSourceName, $DataSource, $dsa ) {
     $dict = @{}
     $dict["Name"] = $DataSourceName
-    switch ( $Datasource.Type.ToLower() )
-    {
-        "microsoft.servicebus/eventhub" {  $dict["ServiceBusNamespace"] = $DataSource.Properties.ServiceBusNamespace  
-                                           $dict["EventHubName"] = $DataSource.Properties.EventHubName 
+    if ( $DataSource -ne $null ) {
+        switch ( $Datasource.Type.ToLower() )
+        {
+            "microsoft.servicebus/eventhub" {  $dict["ServiceBusNamespace"] = $DataSource.Properties.ServiceBusNamespace  
+                                            $dict["EventHubName"] = $DataSource.Properties.EventHubName 
+                                            }
+            "microsoft.storage/blob" { $dict["StorageAccountName"] = $DataSource.Properties.StorageAccounts[0].AccountName }
+            "microsoft.sql/server/database" {  $dict["Server"] = $DataSource.Properties.Server
+                                            $dict["Database"] = $DataSource.Properties.Database
+                                            $dict["User"] = $DataSource.Properties.User
+                                            $dict["Password"] = $DataSource.Properties.Password
+                                            }
+            "microsoft.servicebus/queue" { $dict["ServiceBusNamespace"] = $DataSource.Properties.ServiceBusNamespace
+                                        $dict["QueueName"] = $DataSource.Properties.QueueName
                                         }
-        "microsoft.storage/blob" { $dict["StorageAccountName"] = $DataSource.Properties.StorageAccounts[0].AccountName }
-        "microsoft.sql/server/database" {  $dict["Server"] = $DataSource.Properties.Server
-                                           $dict["Database"] = $DataSource.Properties.Database
-                                           $dict["User"] = $DataSource.Properties.User
-                                           $dict["Password"] = $DataSource.Properties.Password
-                                         }
-        "microsoft.servicebus/queue" { $dict["ServiceBusNamespace"] = $DataSource.Properties.ServiceBusNamespace
-                                       $dict["QueueName"] = $DataSource.Properties.QueueName
-                                     }
-        "microsoft.servicebus/topic" { $dict["ServiceBusNamespace"] = $DataSource.Properties.ServiceBusNamespace
-                                       $dict["TopicName"] = $DataSource.Properties.TopicName
-                                      }
-        default { 
-            "Unsupported DataSource type: $($Datasource.Type)"
-            exit 3
-        }
-    }                
+            "microsoft.servicebus/topic" { $dict["ServiceBusNamespace"] = $DataSource.Properties.ServiceBusNamespace
+                                        $dict["TopicName"] = $DataSource.Properties.TopicName
+                                        }
+            default { 
+                "Unsupported DataSource type: $($Datasource.Type)"
+                exit 3
+            }
+        }                
+    }
     $dsa.Add($dict) | Out-Null
 }
 # --------------------------------------------------------------------------------------------------------------
